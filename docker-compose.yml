@@ -1,0 +1,25 @@
+services:
+  frontend:
+    build: ./app
+    ports:
+      - 3000:80
+  backend:
+    build: ./api
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+    volumes:
+      - db-data:/var/lib/mysql
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=demo_db
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:
+  
