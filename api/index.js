@@ -7,8 +7,8 @@ const Sequelize = require('sequelize');
 app.use(cors());
 
 // MySQL connection using Sequelize
-const sequelize = new Sequelize('demo_db', 'root', 'password', {
-  host: 'db',
+const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
+  host: process.env.DB_URL,
   dialect: 'mysql',
 });
 
@@ -22,6 +22,10 @@ const User = sequelize.define('user', {
 
 // Sync database
 sequelize.sync();
+
+app.get('/', async (req, res) => {
+  res.send("hello from API");
+});
 
 // CRUD Routes
 app.get('/users', async (req, res) => {
