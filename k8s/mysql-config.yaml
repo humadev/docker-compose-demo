@@ -4,4 +4,4 @@ metadata:
   name: mysql-config
 data:
   db-url: mysql-service
-  
+  db-name: demo_db

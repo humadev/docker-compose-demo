@@ -15,25 +15,29 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql-db
-        image: mysql:9.1.0
+      - name: mysql
+        image: mysql:8.4.3
         ports:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
-        - name: MYSQL_DATABASE
-          value: demo-db
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: mysql-user
-              key: db-url
+              name: mysql-secret
+              key: mysql-user
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secret
               key: mysql-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: db-name
+        
 ---
 apiVersion: v1
 kind: Service
@@ -43,6 +47,6 @@ spec:
   selector:
     app: mysql
   ports:
-  - protocol: TCP
-    port: 3306
-    targetPort: 3306
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306

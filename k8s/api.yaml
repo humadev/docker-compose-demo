@@ -5,7 +5,7 @@ metadata:
   labels:
     app: api
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: api
@@ -15,24 +15,27 @@ spec:
         app: api
     spec:
       containers:
-      - name: demo-api
-        image: demo-api:latest
+      - name: api
+        image: demo-api
         imagePullPolicy: Never
         ports:
         - containerPort: 4000
         env:
-        - name: MYSQL_DATABASE
-          value: 'demo-db'
         - name: DB_URL
           valueFrom:
             configMapKeyRef:
               name: mysql-config
               key: db-url
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: db-name
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: mysql-user
-              key: db-url
+              name: mysql-secret
+              key: mysql-user
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -49,6 +52,6 @@ spec:
     app: api
   ports:
     - protocol: TCP
-      port: 80
+      port: 4000
       targetPort: 4000
       nodePort: 30000
