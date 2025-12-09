@@ -15,6 +15,9 @@ services:
       - db
     environment:
       MYSQL_DATABASE: 'demo_db'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      DB_URL: 'db'
     develop:
       watch:
         - action: rebuild
@@ -25,5 +28,6 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - db-data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
 volumes:
   db-data:
